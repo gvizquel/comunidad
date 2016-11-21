@@ -1,0 +1,12 @@
+/* Icon when the collapsible content is shown */
+  .btnex:after {
+    font-family: "Glyphicons Halflings";
+    content: "\e082";
+    margin-left: 5px;
+    margin-right: 5px;
+    float: left;
+  }
+  /* Icon when the collapsible content is hidden */
+  .btnex.collapsed:after {
+    content: "\e081";
+  }

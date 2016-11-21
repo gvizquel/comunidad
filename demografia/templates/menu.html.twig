@@ -1,0 +1,49 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">{{ comunidad }}</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Datos Demográficos<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url "demografia:comunidad" %}">Resumen Comunidad</a></li>
+            <li><a href="{% url "demografia:mapa" %}">Ambito Geográfico</a></li>
+            <li><a href="{% url "demografia:zona" %}">Zona</a></li>
+            <li><a href="">Hogares</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url "demografia:resumenCenso" %}">Censo Demográfico</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servicios<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Carta de residencia</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{ user.username }}<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Cambiar clave</a></li>
+            <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-remove-circle"></span> Salir</a></li>
+          </ul>
+        </li>
+        <li><a href=""><span class="glyphicon glyphicon-phone-alt"></span></a></li>
+        <li><a href=""><span class="glyphicon glyphicon-download"></span></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container-fluid -->
+</nav>

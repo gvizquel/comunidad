@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+{% block title %}{{ comunidad }}{% endblock %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:comunidad" %}">Comunidad</a></li>
+      <li class="active">Ubicación Geográfica</li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+    <div  id="map" style="height: 470px"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFTWpqUawA4PFVEZkU9GAcv9uV6WWgth0"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            var hexVal = "0123456789ABCDEF".split("");
+            var defaultColor = '#ff0000';
+            var options = {
+                zoom: 17,
+                center: new google.maps.LatLng({{ consejoComunal.coordenadasconsejocomunal }}),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                draggableCursor: 'default',
+                draggingCursor: 'default'
+            };
+
+            var map = new google.maps.Map(document.getElementById('map'), options);
+
+            var marker = new google.maps.Marker({
+            position: new google.maps.LatLng({{ consejoComunal.coordenadasconsejocomunal }}),
+            map: map,
+            title: 'Consejo Comunal '
+          });
+
+        };
+    </script>
+{% endblock %}

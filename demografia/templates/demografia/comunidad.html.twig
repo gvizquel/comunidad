@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+{% block title %}{{ comunidad }}{% endblock %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li class="active">Comunidad</li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Datos Demográficos</b></div>
+		<div class="panel-body">
+			<div class="row">
+			  <div class="col-xs-2"><label class="control-label pull-right">Comunidad:</label></div>
+			  <div class="col-xs-10 pull-left">{{ comunidad }}</div>
+			</div>
+			<div class="row">
+			  <div class="col-xs-2"><label class="control-label pull-right">Ubicacion:</label></div>
+			  <div class="col-xs-10 pull-left">{{ comunidad.tipolocal }} {{ comunidad.numerolocal }}. PISO {{ comunidad.pisolocal }}. {{ comunidad.referencialocal }}. {{ comunidad.nombrelocal }}. {{ comunidad.tipolocalidad }} {{ comunidad.nombrelocalida }}. {{ comunidad.tipovia }} {{ comunidad.pknombrevia }}. PARROQUIA {{ comunidad.parroquia }}. MUNICIPIO: {{ comunidad.parroquia.idmunicipiocompletoparroquia }}. ESTADO: {{ comunidad.parroquia.idmunicipiocompletoparroquia.idestadomunicipio }}. PAÍS: VENEZUELA. <a href="{% url "demografia:ubicacion" %}">&nbsp;<span class="glyphicon glyphicon-map-marker"></span>&nbsp;Ver ubicación</a></div>
+			</div>
+			<div class="row">
+			  <div class="col-xs-2"><label class="control-label pull-right">Ámbito Geográfico:</label></div>
+			  <div class="col-xs-10 pull-left"><a href="{% url "demografia:mapa" %}">&nbsp;<span class="fa fa-map"></span>&nbsp;Ver mapa</a></div>
+			</div>
+			<div class="row">
+			  <div class="col-xs-2"><label class="control-label pull-right">Viviendas censadas:</label></div>
+			  <div class="col-xs-10 pull-left"><span class="badge">{{ cantidadVivienda }}</span></div>
+			</div>
+			<div class="row">
+			  <div class="col-xs-2"><label class="control-label pull-right">Hogares censados:</label></div>
+			  <div class="col-xs-10 pull-left"><span class="badge">{{ cantidadHogar }}</span></div>
+			</div>
+			<div class="row">
+			  <div class="col-xs-2"><label class="control-label pull-right">Personas censadas:</label></div>
+			  <div class="col-xs-10 pull-left"><span class="badge">{{ cantidadMiembroHogar }}</span></div>
+			</div>
+{% for v in voceros %}
+	{% ifchanged v.zona.pk %}
+		{% if forloop.counter > 1 %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+			<div class="row">
+				<div class="col-xs-2"><label class="control-label pull-right">{% if forloop.counter == 1 %}Zonas:{% else %}{% endif %}&nbsp;</label></div>
+				<div class="col-xs-6 pull-left">
+		{% if v.zona.pk == vocero.zona.pk %}
+  				<a href="{% url "demografia:zona" %}">{{ v.zona }}</a>
+        {% else %}
+  				{{ v.zona }}
+        {% endif %}
+        		</div>
+        		<div id="listContainer" class="col-xs-4 pull-right">
+		  			<a href="#" class="btnex collapsed" data-toggle="collapse" data-target="#zona{{ forloop.counter }}"></a>&nbsp;Voceros
+		  			<div id="zona{{ forloop.counter }}" class="collapse">{{ v.persona }}<br>
+	{% else %} {# else endifchanged #}
+					{{ v.persona }}<br>
+		{% endifchanged %}
+{% endfor %}
+	    </div>{# panel-body #}
+	</div>{# panel-heading #}
+{% endblock %}

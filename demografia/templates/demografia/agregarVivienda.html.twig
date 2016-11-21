@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:demografia:consejoComunal" %}">Consejo Comunal</a></li>
+      <li><a href="{% url "demografia:demografia:zona" %}">Zona</a></li>
+      <li class="active">Agregar Vivienda</a></li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+	<div class="col-md-12" style="float: none; margin: 0 auto;">
+		<div class="panel panel-primary">
+			<div class="panel-heading"><h3 class="panel-title center-block">Editar datos de familia</h3></div>
+			<div class="panel-body"><!--contenido>-->
+				<form role="form" class="form-horizontal" action="#" method="post">
+			    	{% csrf_token %}
+				    	{% for field in form %}
+				    		<div class="form-group margin-bottom {% if field.errors %} has-error {% endif %}">
+					    		<div class="col-xs-3">
+					    			{% if field.id_for_label != "id_form-0-idpersona" %}
+					    				<label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+					    			{% endif %}
+	    						</div>
+						    	<div class="col-xs-9	">
+	    							{{ field }}
+				    				{% for error in field.errors %}
+				    					<span class="help-block">{{ error }}</span>
+			    					{% endfor %}
+    							</div>
+							</div>
+				    {% endfor %}
+			    	<button type="submit" class="btn btn-primary btn center-block">&nbsp;<span class="glyphicon glyphicon-floppy-save"></span>&nbsp;Guardar Cambios</button>
+				</form>
+			</div><!--/contenido>-->
+		</div>
+	</div>
+{% endblock %}

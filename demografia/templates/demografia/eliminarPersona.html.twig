@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:comunidad" %}">Comunidad/a></li>
+      <li><a href="{% url "demografia:zona" %}">Zona</a></li>
+      <li><a href="{% url "demografia:vivienda" vivienda %}">Vivienda</a></li>
+      <li><a href="{% url "demografia:hogar" vivienda hogar %}">Familia</a></li>
+      <li class="active">Eliminar Persona</li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+	<div class="panel panel-danger">
+	    <div class="panel-heading"><b>Eliminar Persona</b></div>
+			<div class="panel-body">
+				<div class="alert alert-danger">¿Está seguro de querer eliminar a la persona "<b>{{ persona.persona }}</b>" del grupo familiar <b>{{ persona.hogar }}</b>?</div>
+				<form role="form" class="form-horizontal" action="#" method="post">
+			    	{% csrf_token %}
+
+					<button type="submit" class="btn btn-danger btn-xs">Si, estoy seguro</button>
+				</form>
+			</div>
+	    </div>
+	</div>
+{% endblock %}

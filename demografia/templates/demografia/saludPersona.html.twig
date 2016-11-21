@@ -1,0 +1,199 @@
+{% extends "base.html.twig" %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:comunidad" %}">Comunidad</a></li>
+      <li><a href="{% url "demografia:zona" %}">Zona</a></li>
+      <li><a href="{% url "demografia:vivienda" vivienda %}">Vivienda</a></li>
+      <li><a href="{% url "demografia:hogar" vivienda hogar %}">Familia</a></li>
+      <li>{{ active }}</li>
+      <li class="active">{{ persona }}</li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+	<ul class="nav nav-tabs">
+  		<li><a href="{% if active == "Mostrar persona" %} {% url "demografia:mostrarPersona" vivienda hogar persona.pk %} {% else %} {% url "demografia:editarPersona" vivienda hogar persona.pk %} {% endif %}">Datos Personales</a></li>
+  		<li><a href="#">Formación</a></li>
+  		<li><a href="#">Perfil Laboral</a></li>
+  		<li class="active"><a href="#">Perfil Salud</a></li>
+	</ul>
+	<div class="col-lg-12 col-md-12" style="border-left: 1px solid #cdd0d4; border-bottom: 1px solid #cdd0d4; border-top: 0px solid #cdd0d4; border-right: 1px solid #cdd0d4;">
+		<br>
+		{% if active == "Mostrar persona" %}
+			{# ############################################################################## #}
+			{# 	      Bloque HTML para mostrar la información particular de una persona       #}
+			{# ############################################################################## #}
+			<div class="row col-lg-12 col-md-12 center-block">
+				<div class="col-lg-2 col-md-2 text-center">
+					{% if persona.foto %}
+						<img src="{{ persona.foto.url }}"/>
+					{% else %}
+						<img src="/media/fotoPersona/sinFoto.png" style="max-height: 178px;"/>
+					{% endif %}
+				</div>
+				<div class="col-lg-10 col-md-10">
+					<div class="panel panel-default">
+						<table id="result_list" class="table table-striped table-bordered table-hover table-condensed">
+							<tbody>
+								<tr>
+									<td class="col-lg-4 col-md-4 col-xs-4"><b>Medicamentos para tratamiento de largo plazo (MTLP):</b></td>
+									<td>{% if persona.salud.mtlp %} Si {% else %} No {% endif %}</td>
+								</tr>
+								<tr>
+									<td><b>Problemas de alcoholismo:</b></td>
+									<td>{% if persona.salud.alcoholismo %} Si {% else %} No {% endif %}</td>
+								</tr>
+								<tr>
+									<td><b>Problemas de tabaquismo:</b></td>
+									<td>{% if persona.salud.tabaquismo %} Si {% else %} No {% endif %}</td>
+								</tr>
+								<tr>
+									<td><b>Problemas de otras drogas:</b></td>
+									<td>{% if persona.salud.drogas %} Si {% else %} No {% endif %}</td>
+								</tr>
+								<tr>
+									<td><b>Patologia(s) que padece:</b></td>
+									<td>
+										{% if listaPatologia %}
+											{% for objs in listaPatologia %}
+												- {{ objs }}
+											{% endfor %}
+										{% else %}
+											No<br>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td><b>Cert. CONAPDIS:</b></td>
+									<td>{% if persona.salud.conapdis %} {{ persona.salud.conapdis }} {% else %} No {% endif %}</td>
+								</tr>
+								<tr>
+									<td><b>Discapacidad (es):</b></td>
+									<td>
+										{% if listaDiscapacidad %}
+											{% for objs in listaDiscapacidad %}
+												- {{ objs }}<br>
+											{% endfor %}
+										{% else %}
+											No<br>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td><b>Apoyo requerido:</b></td>
+									<td>
+										{% if listaTipoApoyo %}
+											{% for objs in listaTipoApoyo %}
+												- {{ objs }}<br>
+											{% endfor %}
+										{% else %}
+											No<br>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td><b>Guía / Cuidadador:</b></td>
+									<td>{{ persona.salud.cuidador }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row col-lg-12 col-md-12 text-center center-block">
+				<a class="btn btn-primary btn" href="{% url "demografia:editarSaludPersona" vivienda hogar persona.pk %}">&nbsp;<span class="glyphicon glyphicon-pencil"></span>&nbsp;Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "demografia:eliminarPersona" vivienda hogar persona.pk %}"class="btn btn-danger btn" href="#">&nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;Eliminar</a>
+			</div>
+			<div class="row col-lg-12 col-md-12 center-block">&nbsp;</div>
+		{% else %}
+			<form role="form" class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
+		    	{% csrf_token %}
+		    	{% if form.errors %}
+					<div class="row col-lg-12 col-md-12 center-block alert alert-danger alert-dismissable">
+					  <button type="button" class="close" data-dismiss="alert">&times;</button>
+					  <strong>¡Hay errores en el formulario! {{ form.errors }}</strong> Por favor corrijalos e intente guardar los cambios nuevamente.
+					</div>
+				{% endif %}
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.mtlp.id_for_label }}" class="control-label">{{ form.mtlp.label }}</label></div>
+					<div class="col-lg-1 col-md-1 form-group margin-bottom {% if form.mtlp.errors %} has-error {% endif %}">
+						<div class="input-group">{{ form.mtlp }}</span></div>
+						<span class="help-block">{{ form.mtlp.errors }}</span>
+					</div>
+					<div class="col-lg-2 col-md-2"><label for="{{ form.alcoholismo.id_for_label }}" class="control-label">{{ form.alcoholismo.label }}</label></div>
+					<div class="col-lg-1 col-md-1 form-group margin-bottom {% if form.alcoholismo.errors %} has-error {% endif %}">
+						<div class="input-group">{{ form.alcoholismo }}</div>
+						<span class="help-block">{{ form.alcoholismo.errors }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.tabaquismo.id_for_label }}" class="control-label">{{ form.tabaquismo.label }}</label></div>
+					<div class="col-lg-1 col-md-1 form-group margin-bottom {% if form.tabaquismo.errors %} has-error {% endif %}">
+						<div class="input-group">{{ form.tabaquismo }}</div>
+						<span class="help-block">{{ form.tabaquismo.errors }}</span>
+					</div>
+					<div class="col-lg-2 col-md-2"><label for="{{ form.drogas.id_for_label }}" class="control-label">{{ form.drogas.label }}</label></div>
+					<div class="col-lg-1 col-md-1 form-group margin-bottom {% if form.drogas.errors %} has-error {% endif %}">
+						<div class="input-group">{{ form.drogas }}</div>
+						<span class="help-block">{{ form.drogas.errors }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.patologia.id_for_label }}" class="control-label">{{ form.patologia.label }}</label></div>
+					<div class="col-lg-5 col-md-5 form-group margin-bottom {% if form.patologia.errors %} has-error {% endif %}">
+						<p style="height: 150px; overflow: auto; border: 1px solid #000000; background: #eee; color: #000; padding: 5px;">
+							{% for opcion in form.patologia.field.choices %}
+								&nbsp;&nbsp;&nbsp;&nbsp;<input id="id_patologia_{{ forloop.counter }}" {% if opcion.0 in form.patologia.value %}checked{% endif %} name="patologia" type="checkbox" value="{{ opcion.0 }}" />&nbsp;&nbsp;{{ opcion.1 }}<br>
+							{% endfor %}
+						</p>
+						<span class="help-block">{{ form.patologia.errors }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.tipoapoyo.id_for_label }}" class="control-label">{{ form.tipoapoyo.label }}</label></div>
+					<div class="col-lg-5 col-md-5 form-group margin-bottom {% if form.tipoapoyo.errors %} has-error {% endif %}">
+						<p style="height: 150px; overflow: auto; border: 1px solid #000000; background: #eee; color: #000; padding: 5px;">
+							{% for opcion in form.tipoapoyo.field.choices %}
+								&nbsp;&nbsp;&nbsp;&nbsp;<input id="id_tipoapoyo_{{ forloop.counter }}" {% if opcion.0 in form.tipoapoyo.value %}checked{% endif %} name="tipoapoyo" type="checkbox" value="{{ opcion.0 }}" />&nbsp;&nbsp;{{ opcion.1 }}<br>
+							{% endfor %}
+						</p>
+						<span class="help-block">{{ form.tipoapoyo.errors }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.conapdis.id_for_label }}" class="control-label">{{ form.conapdis.label }}</label></div>
+					<div class="col-lg-5 col-md-5 form-group {% if form.conapdis.errors %} has-error {% endif %}">
+						<div class="input-group">{{ form.conapdis }}<span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span></div>
+						<span class="help-block">{{ form.conapdis.errors }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.discapacidad.id_for_label }}" class="control-label">{{ form.discapacidad.label }}</label></div>
+					<div class="col-lg-5 col-md-5 form-group {% if form.discapacidad.errors %} has-error {% endif %}">
+						<p style="height: 150px; overflow: auto; border: 1px solid #000000; background: #eee; color: #000; padding: 5px;">
+							{% for t in tipoDiscapacidad %}
+								<b>{{ t.nombretipodiscapacidad }}</b><br>
+								{% for d in t.discapacidad_set.all %}
+									&nbsp;&nbsp;&nbsp;&nbsp;<input id="id_discapacidad_{{ forloop.counter }}" {% if d.pk in form.discapacidad.value %}checked{% endif %} name="discapacidad" type="checkbox" value="{{ d.pk }}" />&nbsp;&nbsp;{{ d.nombrediscapacidad }}<br>
+								{% endfor %}
+							{% endfor %}
+						</p>
+						<span class="help-block">{{ form.discapacidad.errors }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2"><label for="{{ form.cuidador.id_for_label }}" class="control-label">{{ form.cuidador.label }}</label></div>
+					<div class="col-lg-5 col-md-5 form-group {% if form.cuidador.errors %} has-error {% endif %}">
+						<div class="input-group">{{ form.cuidador }}<span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span></div>
+						<span class="help-block">{{ form.cuidador.errors }}</span>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+		    		<button type="submit" class="btn btn-primary btn center-block">&nbsp;<span class="glyphicon glyphicon-floppy-save"></span>&nbsp;Guardar Cambios</button><br>
+				</div>
+		    	<input id="id_persona" name="persona" type="hidden" value="{{ persona.pk }}" />
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:comunidad" %}">Comunidad</a></li>
+      <li><a href="{% url "demografia:zona" %}">Zona</a></li>
+      <li class="active">Eliminar Vivienda</a></li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+	<div class="col-md-6" style="float: none; margin: 0 auto;">
+		<div class="panel panel-danger">
+			<div class="panel-heading"><h3 class="panel-title center-block">Eliminar Vivienda</h3></div>
+			<div class="panel-body"><!--contenido>-->
+				<form role="form" class="form-horizontal" action="#" method="post">
+					<div class="alert alert-danger">
+						¿Está seguro de querer eliminar el hogar "<b>{{ vivienda }}</b>"?
+					</div>
+			    	{% csrf_token %}
+					<button type="submit" class="btn btn-danger btn-xs center-block">&nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;Si, estoy seguro</button>
+				</form>
+			</div><!--/contenido>-->
+		</div>
+	</div>
+{% endblock %}

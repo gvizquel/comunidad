@@ -1,0 +1,334 @@
+{% extends "base.html.twig" %}
+{% load staticfiles %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:comunidad" %}">Comunidad</a></li>
+      <li><a href="{% url "demografia:zona" %}">Zona</a></li>
+      <li><a href="{% url "demografia:vivienda" vivienda %}">Vivienda</a></li>
+      <li><a href="{% url "demografia:hogar" vivienda hogar %}">Familia</a></li>
+      <li>{{ active }}</li>
+      <li class="active">{{ persona }}</li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+	<ul class="nav nav-tabs">
+  		<li class="active"><a href="#">Datos Personales</a></li>
+  		<li><a href="#">Formación</a></li>
+  		<li><a href="#">Perfil Laboral</a></li>
+  		<li><a href="{% if active == "Mostrar persona" %} {% url "demografia:mostrarSaludPersona" vivienda hogar persona.pk %} {% elif active == "Editar persona" %} {% url "demografia:editarSaludPersona" vivienda hogar persona.pk %} {% else %} # {% endif %}">Perfil Salud</a></li>
+	</ul>
+	<div class="col-lg-12 col-md-12" style="border-left: 1px solid #cdd0d4; border-bottom: 1px solid #cdd0d4; border-top: 0px solid #cdd0d4; border-right: 1px solid #cdd0d4;">
+		<br>
+		{% if active == "Mostrar persona" %}
+			{# ############################################################################## #}
+			{# 	      Bloque HTML para mostrar la información particular de una persona       #}
+			{# ############################################################################## #}
+			<div class="row col-lg-12 col-md-12 center-block">
+				<div class="col-lg-2 col-md-2 text-center">
+					{% if persona.foto %}
+						<img src="{{ persona.foto.url }}"/>
+					{% else %}
+						<img src="/media/fotoPersona/sinFoto.png" style="max-height: 178px;"/>
+					{% endif %}
+				</div>
+				<div class="col-lg-10 col-md-10">
+					<div class="panel panel-default">
+						<table id="result_list" class="table table-striped table-bordered table-hover table-condensed">
+							<tbody>
+								<tr>
+									<td class="col-lg-3 col-md-3 col-xs-3"><b>Nombre:</b></td>
+									<td>{{ persona }}</td>
+								</tr>
+								<tr>
+									<td><b>Cédula de Identidad:</b></td>
+									<td>{{ persona.letracedulaidentidad }}-{{ persona.cedulaidentidad }}</td>
+								</tr>
+								<tr>
+									<td><b>R.I.F.:</b></td>
+									<td>{{ persona.rif}}</td>
+								</tr>
+								<tr>
+									<td><b>Pasaporte:</b></td>
+									<td>{{ pers.pasaportepersona}}</td>
+								</tr>
+								<tr>
+									<td><b>Fecha de Nacimiento:</b></td>
+									<td>{{ persona.fechanacimiento }}</td>
+								</tr>
+								<tr>
+									<td><b>País de Nacimiento:</b></td>
+									<td>{{ persona.paisnacimiento }}</td>
+								</tr>
+								<tr>
+									<td><b>Sexo:</b></td>
+									<td>{{ persona.sexo }}</td>
+								</tr>
+								<tr>
+									<td><b>Etnia:</b></td>
+									<td>{{ persona.etnia }}</td>
+								</tr>
+								<tr>
+									<td><b>Teléfono Local:</b></td>
+									<td>{{ persona.telefono }}</td>
+								</tr>
+								<tr>
+									<td><b>Teléfono Celular:</b></td>
+									<td>{{ persona.celular }}</td>
+								</tr>
+								<tr>
+									<td><b>Correo Electrónico:</b></td>
+									<td>{{ persona.email }}</td>
+								</tr>
+								<tr>
+									<td><b>Twitter:</b></td>
+									<td>{{ persona.twitter }}</td>
+								</tr>
+								<tr>
+									<td><b>Padre:</b></td>
+									<td>{{ persona.padre }}</td>
+								</tr>
+								<tr>
+									<td><b>Madre:</b></td>
+									<td>{{ persona.madre }}</td>
+								</tr>
+								<tr>
+									<td><b>Conyuge:</b></td>
+									<td>{{ persona.conyuge }}</td>
+								</tr>
+								<tr>
+									<td><b>CNE:</b></td>
+									<td>{{ persona.cne }}</td>
+								</tr>
+							</tbody>
+						</table>
+				</div>
+			</div>
+			<div class="row col-lg-12 col-md-12 text-center center-block">
+				<a class="btn btn-primary btn" href="{% url "demografia:editarPersona" vivienda hogar persona.pk %}">&nbsp;<span class="glyphicon glyphicon-pencil"></span>&nbsp;Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "demografia:eliminarPersona" vivienda hogar persona.pk %}"class="btn btn-danger btn" href="#">&nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;Eliminar</a>
+			</div>
+			<div class="row col-lg-12 col-md-12 center-block">&nbsp;</div>
+		{% else %}
+			{# ############################################################################## #}
+			{# 	 Bloque HTML para agregar y editar la información particular de una persona   #}
+			{# ############################################################################## #}
+			<form role="form" class="form-horizontal" action="#" method="post" enctype="multipart/form-data">
+		    	{% csrf_token %}
+		    	{% if form.errors %}
+					<div class="row col-lg-12 col-md-12 center-block alert alert-danger alert-dismissable">
+					  <button type="button" class="close" data-dismiss="alert">&times;</button>
+					  <strong>¡Hay errores en el formulario!</strong> Por favor corrijalos e intente guardar los cambios nuevamente.
+					</div>
+				{% endif %}
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.cedulaidentidad.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.cedulaidentidad.id_for_label }}" class="control-label">{{ form.cedulaidentidad.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+						    	<div class="input-group">
+						      		<div class="input-group-btn">
+      									{{ form.letracedulaidentidad }}
+						      		</div>
+									{{ form.cedulaidentidad }}
+						    	</div>
+							<span class="help-block">{{ form.cedulaidentidad.errors }}</span>
+							</div>
+						</div>
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.rif.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.rif.id_for_label }}" class="control-label">{{ form.rif.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.rif }}<span class="help-block">{{ form.rif.errors }}</span></div>
+						</div>
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.pasaporte.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.pasaporte.id_for_label }}" class="control-label">{{ form.pasaporte.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.pasaporte }}<span class="help-block">{{ form.pasaporte.errors }}</span></div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						{% if persona.foto %}
+							<img src="{{ persona.foto.url }}"/>
+						{% else %}
+							<img src="/media/fotoPersona/sinFoto.png" style="max-height: 178px;"/>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.nombre.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.nombre.id_for_label }}" class="control-label">{{ form.nombre.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.nombre }}<span class="help-block">{{ form.nombre.errors }}</span></div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.otrosnombres.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.otrosnombres.id_for_label }}" class="control-label">{{ form.otrosnombres.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.otrosnombres }}<span class="help-block">{{ form.otrosnombres.errors }}</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.apellido.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.apellido.id_for_label }}" class="control-label">{{ form.apellido.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.apellido }}<span class="help-block">{{ form.apellido.errors }}</span></div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.otrosapellidos.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.otrosapellidos.id_for_label }}" class="control-label">{{ form.otrosapellidos.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.otrosapellidos }}<span class="help-block">{{ form.otrosapellidos.errors }}</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.fechanacimiento.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.fechanacimiento.id_for_label }}" class="control-label">{{ form.fechanacimiento.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group date">{{ form.fechanacimiento }}<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span></div>
+								<span class="help-block">{{ form.fechanacimiento.errors }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.paisnacimiento.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.paisnacimiento.id_for_label }}" class="control-label">{{ form.paisnacimiento.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.paisnacimiento }}<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span></div>
+								<span class="help-block">{{ form.paisnacimiento.errors }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.sexo.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.sexo.id_for_label }}" class="control-label">{{ form.sexo.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.sexo }}<span class="input-group-addon"><i class="fa fa-venus-mars"></i></span></div>
+								<span class="help-block">{{ form.sexo.errors }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.etnia.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.etnia.id_for_label }}" class="control-label">{{ form.etnia.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.etnia }}<span class="help-block">{{ form.etnia.errors }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.telefono.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.telefono.id_for_label }}" class="control-label">{{ form.telefono.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.telefono }}<span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span></div>
+								<span class="help-block">{{ form.telefono.errors }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.celular.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.celular.id_for_label }}" class="control-label">{{ form.celular.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.celular }}<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span></div>
+								<span class="help-block">{{ form.celular.errors }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.email.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.email.id_for_label }}" class="control-label">{{ form.email.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.email }}<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span></div>
+								<span class="help-block">{{ form.email.errors }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.twitter.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.twitter.id_for_label }}" class="control-label">{{ form.twitter.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.twitter }}<span class="input-group-addon"><i class="fa fa-twitter"></i></span></div>
+								<span class="help-block">{{ form.twitter.errors }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.padre.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.padre.id_for_label }}" class="control-label">{{ form.padre.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.padre }}<span class="input-group-addon"><i class="fa fa-male"></i></span></div>
+								<span class="help-block">{{ form.padre.errors }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.madre.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.madre.id_for_label }}" class="control-label">{{ form.madre.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.madre }}<span class="input-group-addon"><i class="fa fa-female"></i></span></div>
+								<span class="help-block">{{ form.madre.errors }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.conyuge.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.conyuge.id_for_label }}" class="control-label">{{ form.conyuge.label }}</label></div>
+							<div class="col-lg-8 col-md-8">{{ form.conyuge }}<span class="help-block">{{ form.conyuge.errors }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.madre.errors %} has-error {% endif %}">
+							<div class="col-lg-4 col-md-4"><label for="{{ form.madre.id_for_label }}" class="control-label">{{ form.cne.label }}</label></div>
+							<div class="col-lg-8 col-md-8">
+								<div class="input-group">{{ form.cne }}<span class="input-group-addon"><i class="fa fa-female"></i></span></div>
+								<span class="help-block">{{ form.cne.errors }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row col-lg-12 col-md-12 center-block">
+		    		<button type="submit" class="btn btn-primary btn center-block">&nbsp;<span class="glyphicon glyphicon-floppy-save"></span>&nbsp;Guardar Cambios</button><br>
+				</div>
+		    	<input id="id_authuser" name="authuser" type="hidden" value="{% if form.authuser.value > 0 %}{{ form.authuser.value }}{% endif %}"/>
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{% static "bootstrap-datepicker/js/bootstrap-datepicker.min.js" %}"></script>
+    <script src="{% static "bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js" %}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        // When the document is ready
+        $('#demografia-container .input-group.date').datepicker({
+	        format: "dd/mm/yyyy",
+	        endDate: "{{ hoy }}",
+	        clearBtn: true,
+	        language: "es",
+	        autoclose: true
+	    });
+
+	   /* jQuery(function ($) {
+	    	$("#id_telefono").mask("99/99/9999");
+		});*/
+
+		$(document).ready(function(){
+		  $(id_telefono).inputmask("+58 (999) 999-99-99");
+		  $(id_celular).inputmask("+58 (999) 999-99-99");
+		  $(id_cedulaidentidad).inputmask("[-]99999999");
+		  $(id_rif).inputmask("a-99999999-9");
+		});
+    </script>
+
+{% endblock %}

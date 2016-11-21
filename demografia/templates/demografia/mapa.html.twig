@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+{% block title %}{{ comunidad }}{% endblock %}
+
+{% block migas %}
+    <ol class="breadcrumb">
+      <li><a href="{% url "demografia:index" %}">Inicio</a></li>
+      <li><a href="{% url "demografia:comunidad" %}">Comunidad</a></li>
+      <li class="active">Ambito Geográfico</li>
+    </ol>
+{% endblock %}
+
+{% block contenido %}
+    <div  id="map" class="jumbotron" style="height: 440px"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFTWpqUawA4PFVEZkU9GAcv9uV6WWgth0"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            var defaultColor = '#ff0000';
+            var options = {
+                zoom: 17,
+                center: new google.maps.LatLng(10.507984, -66.909093),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                draggableCursor: 'default',
+                draggingCursor: 'default'
+            };
+
+            var map = new google.maps.Map(document.getElementById('map'), options);
+            var routes = [
+                {% for p in poligono %}
+                    new google.maps.LatLng({{ p }}) {% if not forloop.last%},{% endif %}
+                {% endfor %}
+            ];
+
+            var polygon = new google.maps.Polygon({
+                path: routes
+                , map: map
+                , strokeColor: defaultColor
+                , strokeWeight: 1.5
+                , strokeOpacity: 0.5
+                , fillColor: defaultColor
+                , fillOpacity: 0.15
+                , clickable: false
+            });
+        };
+    </script>
+{% endblock %}
+
+ {# AIzaSyAFTWpqUawA4PFVEZkU9GAcv9uV6WWgth0 #}
