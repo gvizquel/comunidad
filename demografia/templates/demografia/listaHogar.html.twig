@@ -69,7 +69,7 @@
 						  		<tr class="text-center">
 						  			<td>{{ hogar.nombrehogar }}</td>
 								    <td>{{ hogar.tipopropiedadvivienda }}</td>
-								    <td><a class="btn btn-default btn-xs" href="{% url "demografia:hogar" vivienda.pk hogar.pk %}">&nbsp;<span class="fa fa-eye"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{% url "demografia:editarHogar" vivienda.pk hogar.pk %}">&nbsp;<span class="glyphicon glyphicon-pencil"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-danger btn-xs" href="{% url "demografia:eliminarHogar" vivienda.pk hogar.pk %}">&nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;</a></td>
+								    <td><a class="btn btn-default btn-xs" href="{% url "demografia:hogar" vivienda.pk hogar.pk %}">&nbsp;<span class="fa fa-eye"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{% url "demografia:editarHogar" vivienda.pk hogar.pk %}">&nbsp;<span class="fa fa-pencil-square-o fa-lg"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-danger btn-xs" href="{% url "demografia:eliminarHogar" vivienda.pk hogar.pk %}">&nbsp;<span class="fa fa-trash-o fa-lg"></span>&nbsp;</a></td>
 								</tr>
 				            {% endfor %}
 						</tbody>

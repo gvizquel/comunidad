@@ -107,7 +107,7 @@
 				</div>
 			</div>
 			<div class="row col-lg-12 col-md-12 text-center center-block">
-				<a class="btn btn-primary btn" href="{% url "demografia:editarPersona" vivienda hogar persona.pk %}">&nbsp;<span class="glyphicon glyphicon-pencil"></span>&nbsp;Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "demografia:eliminarPersona" vivienda hogar persona.pk %}"class="btn btn-danger btn" href="#">&nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;Eliminar</a>
+				<a class="btn btn-primary btn" href="{% url "demografia:editarPersona" vivienda hogar persona.pk %}">&nbsp;<span class="fa fa-pencil-square-o fa-lg"></span>&nbsp;Editar</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "demografia:eliminarPersona" vivienda hogar persona.pk %}"class="btn btn-danger btn" href="#">&nbsp;<span class="fa fa-trash-o fa-lg"></span>&nbsp;Eliminar</a>
 			</div>
 			<div class="row col-lg-12 col-md-12 center-block">&nbsp;</div>
 		{% else %}
@@ -291,7 +291,7 @@
 						<div class="col-lg-12 col-md-12 form-group margin-bottom {% if form.madre.errors %} has-error {% endif %}">
 							<div class="col-lg-4 col-md-4"><label for="{{ form.madre.id_for_label }}" class="control-label">{{ form.cne.label }}</label></div>
 							<div class="col-lg-8 col-md-8">
-								<div class="input-group">{{ form.cne }}<span class="input-group-addon"><i class="fa fa-female"></i></span></div>
+								<div class="input-group">{{ form.cne }}<span class="input-group-addon"><i class="fa fa-university"></i></span></div>
 								<span class="help-block">{{ form.cne.errors }}</span>
 							</div>
 						</div>

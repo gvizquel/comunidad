@@ -73,7 +73,7 @@
 								<tr class="text-center">
 									<td>{{ p.persona.nombre }} {{ p.persona.otrosnombres }} {{ p.persona.apellido }} {{ p.persona.otrosapellidos }}</td>
 									<td>{{ p.parentesco }}</td>
-									<td><a class="btn btn-default btn-xs" href="{% url "demografia:mostrarPersona"  hogar.vivienda.pk hogar.pk p.persona.pk %}">&nbsp;<span class="fa fa-eye"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{% url "demografia:editarPersona" hogar.vivienda.pk hogar.pk p.persona.pk %}">&nbsp;<span class="glyphicon glyphicon-pencil"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "demografia:eliminarPersona" hogar.vivienda.pk hogar.pk p.persona.pk %}"class="btn btn-danger btn-xs" href="#">&nbsp;<span class="glyphicon glyphicon-trash"></span>&nbsp;</a></td>
+									<td><a class="btn btn-default btn-xs" href="{% url "demografia:mostrarPersona"  hogar.vivienda.pk hogar.pk p.persona.pk %}">&nbsp;<span class="fa fa-eye fa-lg"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{% url "demografia:editarPersona" hogar.vivienda.pk hogar.pk p.persona.pk %}">&nbsp;<span class="fa fa-pencil-square-o fa-lg"></span>&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "demografia:eliminarPersona" hogar.vivienda.pk hogar.pk p.persona.pk %}"class="btn btn-danger btn-xs" href="#">&nbsp;<span class="fa fa-trash-o fa-lg"></span>&nbsp;</a></td>
 								</tr>
 							{% endfor %}
 						</tbody>
