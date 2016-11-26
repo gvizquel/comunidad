@@ -85,7 +85,7 @@ class comunidadAdmin(admin.ModelAdmin):
 				'tipovia',
 				'nombrevia',
 				'tipolocalidad',
-				'nombrelocalida',
+				'nombrelocalidad',
 				'tipolocal',
 				'nombrelocal',
 				'pisolocal',

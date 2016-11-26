@@ -25,7 +25,7 @@ class Comunidad(models.Model):
     tipovia = models.ForeignKey('Tipovia', on_delete=models.PROTECT, db_column='idTipoVia', verbose_name="Tipo de v\xeda", blank=True, null=True)
     nombrevia = models.CharField("Nombre de la vía", db_column='nombreVia', max_length=255, blank=True, null=True)
     tipolocalidad = models.ForeignKey('Tipolocalidad', on_delete=models.PROTECT, db_column='idTipoLocalidad', verbose_name="Tipo de localidad", blank=True, null=True)
-    nombrelocalidad = models.CharField("Nombre de la localidad", db_column='nombreLocalida', max_length=255, blank=True, null=True)
+    nombrelocalidad = models.CharField("Nombre de la localidad", db_column='nombreLocalidad', max_length=255, blank=True, null=True)
     tipolocal = models.ForeignKey('Tipovivienda', on_delete=models.PROTECT, db_column='idTipoLocal', verbose_name="Tipo de local", blank=True, null=True)
     nombrelocal = models.CharField("Nombre del local", db_column='nombreLocal', max_length=255, blank=True, null=True)
     pisolocal = models.CharField("Piso del local", db_column='pisoLocal', max_length=255, blank=True, null=True)

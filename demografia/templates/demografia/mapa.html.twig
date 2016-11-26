@@ -14,37 +14,23 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFTWpqUawA4PFVEZkU9GAcv9uV6WWgth0"></script>
-    <script type="text/javascript">
-        window.onload = function(){
-            var defaultColor = '#ff0000';
-            var options = {
-                zoom: 17,
-                center: new google.maps.LatLng(10.507984, -66.909093),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                draggableCursor: 'default',
-                draggingCursor: 'default'
-            };
+    <script>
+        var miMapa = L.map('map', {
+            center: [{{ comunidad.centrocoordenadas }}],
+            zoom: 17,
+            maxZoom: 19
+        });
 
-            var map = new google.maps.Map(document.getElementById('map'), options);
-            var routes = [
-                {% for p in poligono %}
-                    new google.maps.LatLng({{ p }}) {% if not forloop.last%},{% endif %}
-                {% endfor %}
-            ];
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+            {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+            }).addTo(miMapa);
 
-            var polygon = new google.maps.Polygon({
-                path: routes
-                , map: map
-                , strokeColor: defaultColor
-                , strokeWeight: 1.5
-                , strokeOpacity: 0.5
-                , fillColor: defaultColor
-                , fillOpacity: 0.15
-                , clickable: false
-            });
-        };
+        L.polygon([
+            {% for p in poligono %}
+                [{{ p }}] {% if not forloop.last%},{% endif %}
+            {% endfor %}
+        ], {color: 'red'}).addTo(miMapa).bindPopup("{{ comunidad.tipocomunidad }}: {{ comunidad.nombrecomunidad }}").openPopup();
     </script>
 {% endblock %}
-
- {# AIzaSyAFTWpqUawA4PFVEZkU9GAcv9uV6WWgth0 #}

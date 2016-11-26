@@ -10,31 +10,26 @@
 {% endblock %}
 
 {% block contenido %}
-    <div  id="map" style="height: 470px"></div>
+    <div id="map" style="height: 450px;"></div>
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFTWpqUawA4PFVEZkU9GAcv9uV6WWgth0"></script>
-    <script type="text/javascript">
-        window.onload = function(){
-            var hexVal = "0123456789ABCDEF".split("");
-            var defaultColor = '#ff0000';
-            var options = {
-                zoom: 17,
-                center: new google.maps.LatLng({{ consejoComunal.coordenadasconsejocomunal }}),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                draggableCursor: 'default',
-                draggingCursor: 'default'
-            };
+    <script>
+        var myIcon = L.divIcon({className: 'fa fa-trash-o fa-3x'});
 
-            var map = new google.maps.Map(document.getElementById('map'), options);
+        var miMapa = L.map('map', {
+            center: [{{ comunidad.centrocoordenadas }}],
+            zoom: 17
+        });
 
-            var marker = new google.maps.Marker({
-            position: new google.maps.LatLng({{ consejoComunal.coordenadasconsejocomunal }}),
-            map: map,
-            title: 'Consejo Comunal '
-          });
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+        {
+            maxZoom: 19, 
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+        }).addTo(miMapa);
 
-        };
-    </script>
+        L.marker([{{ comunidad.coordenadas }}]).addTo(miMapa).bindPopup("{{ comunidad.tipocomunidad }}: {{ comunidad.nombrecomunidad }}").openPopup();
+
+</script>
+
 {% endblock %}
